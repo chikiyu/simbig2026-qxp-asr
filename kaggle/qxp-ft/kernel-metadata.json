@@ -1,0 +1,14 @@
+{
+  "id": "ayayon/qxp-ft",
+  "title": "qxp-ft",
+  "code_file": "run.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": ["ayayon/puno-quechua-raw", "ayayon/qxp-aux"],
+  "kernel_sources": [],
+  "competition_sources": [],
+  "machine_shape": "NvidiaTeslaT4"
+}

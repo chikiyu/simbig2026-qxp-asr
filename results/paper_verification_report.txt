@@ -1,0 +1,180 @@
+== Data, overlap and evaluation subsets (tools/verify_paper_data.py)
+CV26 validated clips                                                   22727
+CV26 validated distinct sentence_id                                    2067
+CV26 validated speakers                                                77
+CV26 validated hours                                                   30.49
+curated sentences (rows)                                               2067
+curated distinct texts                                                 2051
+validated clips covered by curated sentences                           22727
+  speakers of those clips                                              77
+  hours of those clips                                                 30.49
+  readings per sentence (clips / sentences)                            11.0
+curated tokens / types                                                 8273 / 4594
+curated tokens with >=15 chars (%)                                     2.5
+curated tokens with >=10 chars (%)                                     25.5
+curated types with >=15 chars (%)                                      4.4
+longest curated word (chars)                                           25
+SPS5 rows                                                              7305
+SPS5 transcribed clips / hours                                         1222 / 5.81
+SPS5 untranscribed clips / hours                                       6083 / 29.60
+SPS5 transcribed split counts                                          {'test': 296, 'train': 478, 'dev': 300, '': 148}
+SPS5 transcribed age counts                                            {'thirties': 226, 'twenties': 941, 'fifties': 15, 'sixties': 18, 'teens': 9, 'fourties': 12, 'seventies': 1}
+SPS5 transcribed clips aged 50+                                        34
+SPS5 transcribed clips aged 60+                                        19
+SPS5 all clips aged 50+ / hours                                        1377 / 6.29
+SPS5 dev+test transcribed clips                                        596
+baseline silver clips (train+dev+test)                                 7154
+  of which have SPS5 duration / hours                                  7154 / 30.35
+  of which are SPS5-transcribed clips                                  1222
+  of which are SPS5-untranscribed clips                                5932
+OOD clips                                                              109
+blind clips by type                                                    {'scripted': 438, 'spontaneous': 221}
+blind (type, age)                                                      {('scripted', 'thirties'): 219, ('spontaneous', 'sixties'): 221, ('scripted', 'twenties'): 219}
+blind scripted minutes                                                 25.7
+blind spontaneous minutes                                              33.5
+manifest lines train(V) / train_silver(V+S) / test / test_spont        18872 / 22387 / 2299 / 360
+(1) test_spont refs verbatim in V+S manifest                           359 / 360
+(1) test_spont refs verbatim in V manifest                             4 / 360
+(1) same after basic_norm (V+S / V)                                    359 / 4
+(1) test_spont texts unique in SPS5 (count == 1)                       322 / 360
+(1) test_spont distinct texts                                          345
+(2) scripted test texts found in V manifest                            2298 / 2299
+(3) SPS5 dev+test texts in V manifest                                  290 / 596
+(3) SPS5 dev+test texts in V+S manifest                                406 / 596
+(3) SPS5 dev+test clips clean for V and V+S                            190 (json: 190, identical: True)
+(3) clean clips by split                                               {'test': 18, 'dev': 172}
+(4) scripted test clips in cv26 scripted train                         2199 / 2299
+(4) scripted test clips in cv26 scripted dev                           100 / 2299
+(4) SPS5 dev+test clips in cv26 spontaneous train                      589 / 596
+(b) clip-disjoint ids json / recomputed                                100 / 100
+(c) held-out sentences (md5 % 10 == 0) among curated                   210
+(c) scripted test clips with held-out sentences                        234 (json: 234); distinct sentences: 198
+SPS5 dev+test ages                                                     {'thirties': 171, 'twenties': 423, 'fourties': 1, 'sixties': 1}
+SPS clean-190 ages                                                     {'thirties': 9, 'twenties': 181}
+SPS clean-190 clips in the cv26 spontaneous train split                190 / 190
+CV clip-disjoint: speakers / of them in cv26 train / in original train split 3 / 0 / 0
+
+== Results, oracle, errors, LM (tools/verify_paper_results.py)
+OOD n                                                                    109
+OOD best baseline cpt_cv26_silver official                               25.08 / 4.11
+OOD cpt_silver official                                                  25.83 / 4.20
+OOD cpt_silver greedy                                                    22.36 / 3.76
+OOD cpt_silver beam                                                      20.48 / 3.56
+OOD cpt_validated official                                               32.83 / 5.61
+OOD MBR5 1-best                                                          20.18 / 3.49
+OOD MBR7 1-best                                                          19.50 / 3.40
+OOD ROVER7                                                               19.13 / 3.52
+OOD MBR7 N-best K=2                                                      19.13 / 3.38
+OOD MBR7 N-best K=4                                                      18.83 / 3.30
+OOD MBR7 N-best K=8                                                      18.98 / 3.35
+OOD relative reduction WER / CER (%)                                     24.9 / 19.6
+OOD omni_llm3b greedy+norm / official                                    25.98 / 4.14  |  30.27 / 4.66
+OOD omni_ctc3b greedy+norm                                               33.36 / 5.07
+OOD ft_A beam                                                            27.26 / 4.66
+OOD ft_C beam                                                            20.71 / 3.53
+OOD ft_D beam                                                            21.23 / 3.56
+OOD ft_curated beam                                                      21.08 / 3.52
+OOD cpt_validated beam                                                   27.11 / 4.97
+OOD MBR6 (MBR7 without ft_D) N-best K=4                                  18.37 / 3.24
+clip-disjoint cpt_validated official                                     11.78 / 1.54
+clip-disjoint cpt_silver official                                        12.24 / 1.62
+clip-disjoint cpt_cv26_validated official                                12.01 / 1.59
+clip-disjoint cpt_cv26_silver official                                   12.01 / 1.59
+clip-disjoint cpt_validated greedy+norm                                  1.39 / 0.25
+clip-disjoint ft_A beam                                                  0.46 / 0.14
+clip-disjoint ft_C beam                                                  0.92 / 0.22
+clip-disjoint ft_D beam                                                  0.92 / 0.22
+clip-disjoint ft_A26 beam                                                0.69 / 0.19
+clip-disjoint MBR(A,A26,D) 1-best / N-best                               0.69 / 0.19  |  0.69 / 0.19
+held-out cpt_validated official                                          11.01 / 1.41
+held-out cpt_silver official                                             11.84 / 1.51
+held-out ft_A beam                                                       0.73 / 0.12
+held-out ft_S3 beam                                                      2.10 / 0.29
+held-out ft_S2 beam                                                      2.52 / 0.35
+held-out n                                                               234
+clip-disjoint n                                                          100
+SPS190 cpt_validated official                                            17.23 / 2.83
+SPS190 cpt_silver official                                               15.68 / 2.55
+SPS190 cpt_cv26_silver official                                          12.76 / 1.99
+SPS190 cpt_validated beam                                                14.68 / 2.47
+SPS190 cpt_silver beam                                                   13.59 / 2.26
+SPS190 MBR6 (no ft_D) N-best K=4                                         12.83 / 2.22
+SPS190 MBR4 clean XLS-R N-best K=4                                       13.52 / 2.26
+SPS190 ft_C beam                                                         13.57 / 2.31
+SPS full 596 MBR7 N-best K=4 (cv26 member: contaminated)                 7.24 / 1.14
+SPS full 596 MBR7 1-best / ROVER7                                        7.36 / 1.14  |  7.30 / 1.19
+oracle: utts / mean candidates per utt                                   109 / 13.8
+oracle WER, N-best pool                                                  11.45
+oracle WER, the seven 1-best                                             13.40
+oracle: OOD recordings (groups)                                          13
+curated vocabulary size used for the analysis                            4594
+ood: errors / ref words / WER                                            250 / 1328 / 18.83
+ood: compound-segmentation errors (% of errors)                          28 (11.2%)
+ood: subs hyp-in-curated & ref-not (% of errors) -> WER w/o them         42 (16.8%) -> 15.66
+sps_devtest: errors / ref words / WER                                    821 / 11342 / 7.24
+sps_devtest: compound-segmentation errors (% of errors)                  182 (22.2%)
+sps_devtest: subs hyp-in-curated & ref-not (% of errors) -> WER w/o them 157 (19.1%) -> 5.85
+mean words per reference: ood                                            12.2
+mean words per reference: sps_devtest                                    19.0
+mean words per reference: scr_heldout                                    4.1
+mean words per reference: scr_clipclean                                  4.3
+blind hypotheses scripted: n / mean words                                438 / 3.6
+blind hypotheses spontaneous: n / mean words                             221 / 10.5
+LM text all_clean: lines / words / vocabulary                            8609 / 97731 / 25856
+LM text all_full: lines / words / vocabulary                             9314 / 110401 / 28469
+blind hypothesis tokens OOV wrt all_full LM (%)                          21.4
+blind hypothesis types OOV wrt all_full LM (%)                           36.8
+  scripted: tokens OOV (%)                                               19.7
+  spontaneous: tokens OOV (%)                                            22.6
+blind scripted hyps: median normalised char edit distance to closest CV sentence 0.48
+blind scripted hyps: exact matches with a CV sentence                    16 / 438
+normaliser word maps / rules                                             375 / 107
+OOD best baseline + our normaliser (cpt_cv26_silver greedy+norm)         21.99 / 3.74
+clip-disjoint best baseline + our normaliser (cpt_validated greedy+norm) 1.39 / 0.25
+SPS190 best baseline + our normaliser (cpt_silver greedy+norm)           13.87 / 2.29
+ood: reference tokens not in the local LM vocabulary (%)                 35.2
+ood: reference words changed by the normaliser (%)                       2.1
+sps_devtest: reference tokens not in the local LM vocabulary (%)         21.5
+sps_devtest: reference words changed by the normaliser (%)               1.9
+MBR candidates per utterance: upper bound (5 x 4 + 2)                    22
+
+== Normaliser cross-validation, behavioural test (tools/verify_paper_extra.py)
+pairs                                                                    2067
+original vs curated WER                                                  8.85
+v2 normalised vs curated WER (5-fold by md5)                             3.09
+v2 curated words altered (%)                                             0.08
+v1 (no idempotence filter) WER / curated words altered (%)               3.28 / 0.60
+v2 + span rules (submission) WER / curated words altered (%)             2.96 / 0.08
+behavioural SPS5 dev cpt_validated: seen (n) / unseen (n)                2.67 (127) / 18.43 (173)
+behavioural SPS5 dev cpt_silver: seen (n) / unseen (n)                   8.10 (128) / 16.92 (172)
+
+== Learned combination (src/rerank.py)
+OOD leave-one-recording-out CV (13 recordings):
+  mbr       WER  19.05 CER  3.33   P(better than mbr) = nan
+  mbr_conf  WER  18.98 CER  3.30   P(better than mbr) = 0.613
+  mbr_lmc   WER  19.50 CER  3.43   P(better than mbr) = 0.009
+  ranker    WER  19.50 CER  3.30   P(better than mbr) = 0.173
+SPS 5.0 dev+test (parameters fit on all OOD):
+  mbr       WER   7.27 CER  1.14
+  mbr_conf  WER   7.12 CER  1.11
+  mbr_lmc   WER   7.21 CER  1.13   lam=0.05
+  ranker    WER   8.38 CER  1.45
+ranker weights (standardised): {'cons': -1.167, 'cons_w': -1.171, 'nsys': 0.157, 'ntop': 0.149, 'rank': 0.398, 'ac': -0.637, 'lmw': -0.299, 'lmc': 1.278, 'oov': 0.257, 'lendev': 0.314}
+
+== Reproduction of the published protocol (results/paper_protocol.tsv)
+set	system	n	paper_WER	paper_CER	curated_WER	curated_CER
+scripted (paper test, 2,296)	cpt_validated	2299	1.2036434612882239	0.18542673725670733	9.694209499024073	1.254823787983337
+scripted (paper test, 2,296)	cpt_silver	2299	2.081977878985036	0.2941251694416737	10.355671220993278	1.349382810703059
+scripted (paper test, 2,296)	cpt_cv26_silver	2299	1.2036434612882239	0.1828691270876493	9.66167859466493	1.2471568401952515
+scripted (paper test, 2,296)	ft_curated	2299	9.965300368683582	1.2353257116550296	4.196486662329213	0.5149633264330804
+scripted (paper test, 2,296)	ft_D	2299	10.095423986120148	1.262180618430139	2.2337887659943614	0.2708988218456899
+spontaneous (paper test_spont, 360)	cpt_validated	117	11.571841851494696	1.4096965006357454	10.462873674059788	1.2705076506656354
+spontaneous (paper test_spont, 360)	cpt_silver	117	2.507232401157184	0.29299574326939026	4.821600771456123	0.568966469645915
+spontaneous (paper test_spont, 360)	cpt_cv26_silver	117	3.4233365477338475	0.3814472884073194	5.207328833172613	0.5965862011821245
+spontaneous (paper test_spont, 360)	ft_curated	117	6.364513018322084	0.7352534689590359	4.146576663452266	0.4640114898083191
+spontaneous (paper test_spont, 360)	ft_D	117	5.88235294117647	0.707612361103433	3.616200578592092	0.43639175827210963
+OOD (paper Add_data, 109)	cpt_validated	109	33.58433734939759	5.8268398268398265	32.831325301204814	5.606021282117831
+OOD (paper Add_data, 109)	cpt_silver	109	26.506024096385545	4.3896103896103895	25.82831325301205	4.204515961588372
+OOD (paper Add_data, 109)	cpt_cv26_silver	109	26.129518072289155	4.337662337662337	25.07530120481928	4.10935202007094
+OOD (paper Add_data, 109)	ft_curated	109	25.75301204819277	4.12987012987013	23.268072289156628	3.728696254001211
+OOD (paper Add_data, 109)	ft_D	109	24.92469879518072	4.008658008658009	22.439759036144576	3.6162297776624275

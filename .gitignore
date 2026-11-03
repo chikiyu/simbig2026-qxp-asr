@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+checkpoints/
+submissions/
+qxp_test_dataset/
+asr-puno-quechua/
+dataset common voice */
+results/logits/
+results/final/
+results/omni/
+results/lm/*.arpa
+results/lm/*.bin
+results/lm/*.txt
